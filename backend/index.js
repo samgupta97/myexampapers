@@ -22,7 +22,10 @@ var PORT = process.env.PORT || 5000;
 // =============================================
 // MIDDLEWARE
 // =============================================
-app.use(cors());
+app.use(cors({
+  origin: ['https://app.myexampapers.co.uk', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
