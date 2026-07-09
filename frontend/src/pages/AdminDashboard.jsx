@@ -30,7 +30,7 @@ function AdminDashboard() {
     var token = localStorage.getItem('token');
     var userString = localStorage.getItem('user');
     var user = userString ? JSON.parse(userString) : null;
-    
+
     if (!token || !user || user.role !== 'Admin') {
       navigate('/admin/login');
       return;
@@ -62,11 +62,11 @@ function AdminDashboard() {
         .then(function (response) {
           setMessage('Paper deleted successfully.');
           loadPapers();
-          setTimeout(function() { setMessage(''); }, 3000);
+          setTimeout(function () { setMessage(''); }, 3000);
         })
         .catch(function (err) {
           setError('Failed to delete paper.');
-          setTimeout(function() { setError(''); }, 3000);
+          setTimeout(function () { setError(''); }, 3000);
         });
     }
   }
@@ -120,7 +120,7 @@ function AdminDashboard() {
         setEditingPaper(null);
         setMessage('Paper updated successfully.');
         loadPapers();
-        setTimeout(function() { setMessage(''); }, 3000);
+        setTimeout(function () { setMessage(''); }, 3000);
       })
       .catch(function (err) {
         setSaving(false);
@@ -138,7 +138,7 @@ function AdminDashboard() {
           <ul className="admin-nav-list">
             <li>
               <Link to="/admin/home" className="admin-nav-link active" id="admin-sidebar-papers">
-                📂 Uploaded Papers
+                📂 Dashboard
               </Link>
             </li>
             <li>
@@ -211,7 +211,7 @@ function AdminDashboard() {
                   id="edit-title"
                   className="form-input"
                   value={editTitle}
-                  onChange={function(e) { setEditTitle(e.target.value); }}
+                  onChange={function (e) { setEditTitle(e.target.value); }}
                   required
                 />
               </div>
@@ -224,7 +224,7 @@ function AdminDashboard() {
                     id="edit-subject"
                     className="form-input"
                     value={editSubject}
-                    onChange={function(e) { setEditSubject(e.target.value); }}
+                    onChange={function (e) { setEditSubject(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -234,7 +234,7 @@ function AdminDashboard() {
                     id="edit-class"
                     className="form-input"
                     value={editClassYear}
-                    onChange={function(e) { setEditClassYear(e.target.value); }}
+                    onChange={function (e) { setEditClassYear(e.target.value); }}
                   />
                 </div>
               </div>
@@ -247,7 +247,7 @@ function AdminDashboard() {
                     id="edit-board"
                     className="form-input"
                     value={editExamBoard}
-                    onChange={function(e) { setEditExamBoard(e.target.value); }}
+                    onChange={function (e) { setEditExamBoard(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -258,7 +258,7 @@ function AdminDashboard() {
                     className="form-input"
                     placeholder="e.g. Practice, Mock, Past Paper"
                     value={editPaperType}
-                    onChange={function(e) { setEditPaperType(e.target.value); }}
+                    onChange={function (e) { setEditPaperType(e.target.value); }}
                   />
                 </div>
               </div>
@@ -269,7 +269,7 @@ function AdminDashboard() {
                   id="edit-description"
                   className="form-input form-textarea"
                   value={editDescription}
-                  onChange={function(e) { setEditDescription(e.target.value); }}
+                  onChange={function (e) { setEditDescription(e.target.value); }}
                 />
               </div>
 
@@ -282,7 +282,7 @@ function AdminDashboard() {
                     className="form-input"
                     placeholder="e.g. Free or 29.99"
                     value={editPrice}
-                    onChange={function(e) { setEditPrice(e.target.value); }}
+                    onChange={function (e) { setEditPrice(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -291,7 +291,7 @@ function AdminDashboard() {
                     id="edit-status"
                     className="form-input form-select"
                     value={editStatus}
-                    onChange={function(e) { setEditStatus(e.target.value); }}
+                    onChange={function (e) { setEditStatus(e.target.value); }}
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -306,7 +306,7 @@ function AdminDashboard() {
                   id="edit-file"
                   accept=".pdf"
                   className="form-input"
-                  onChange={function(e) { setEditPaperFile(e.target.files[0]); }}
+                  onChange={function (e) { setEditPaperFile(e.target.files[0]); }}
                 />
               </div>
 
@@ -317,7 +317,7 @@ function AdminDashboard() {
                   id="edit-thumbnail"
                   accept="image/*"
                   className="form-input"
-                  onChange={function(e) { setEditThumbnail(e.target.files[0]); }}
+                  onChange={function (e) { setEditThumbnail(e.target.files[0]); }}
                 />
               </div>
 

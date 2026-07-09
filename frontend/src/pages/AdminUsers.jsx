@@ -14,7 +14,7 @@ function AdminUsers() {
   // Add/Edit User Modal States
   var [modalOpen, setModalOpen] = useState(false);
   var [editingUser, setEditingUser] = useState(null); // null if creating, user object if editing
-  
+
   var [userName, setUserName] = useState('');
   var [userEmail, setUserEmail] = useState('');
   var [userMobile, setUserMobile] = useState('');
@@ -26,7 +26,7 @@ function AdminUsers() {
     var token = localStorage.getItem('token');
     var userString = localStorage.getItem('user');
     var loggedInUser = userString ? JSON.parse(userString) : null;
-    
+
     if (!token || !loggedInUser || loggedInUser.role !== 'Admin') {
       navigate('/admin/login');
       return;
@@ -103,7 +103,7 @@ function AdminUsers() {
           setModalOpen(false);
           setMessage('User updated successfully.');
           loadUsers();
-          setTimeout(function() { setMessage(''); }, 3000);
+          setTimeout(function () { setMessage(''); }, 3000);
         })
         .catch(function (err) {
           setModalSaving(false);
@@ -120,7 +120,7 @@ function AdminUsers() {
           setModalOpen(false);
           setMessage('User created successfully.');
           loadUsers();
-          setTimeout(function() { setMessage(''); }, 3000);
+          setTimeout(function () { setMessage(''); }, 3000);
         })
         .catch(function (err) {
           setModalSaving(false);
@@ -135,7 +135,7 @@ function AdminUsers() {
   function handleDeleteUser(id) {
     var userString = localStorage.getItem('user');
     var loggedInUser = userString ? JSON.parse(userString) : null;
-    
+
     if (loggedInUser && loggedInUser.id === id) {
       alert('You cannot delete your own admin account.');
       return;
@@ -146,11 +146,11 @@ function AdminUsers() {
         .then(function (response) {
           setMessage('User deleted successfully.');
           loadUsers();
-          setTimeout(function() { setMessage(''); }, 3000);
+          setTimeout(function () { setMessage(''); }, 3000);
         })
         .catch(function (err) {
           setError('Failed to delete user.');
-          setTimeout(function() { setError(''); }, 3000);
+          setTimeout(function () { setError(''); }, 3000);
         });
     }
   }
@@ -165,7 +165,7 @@ function AdminUsers() {
           <ul className="admin-nav-list">
             <li>
               <Link to="/admin/home" className="admin-nav-link" id="admin-sidebar-papers">
-                📂 Uploaded Papers
+                📂 Dashboard
               </Link>
             </li>
             <li>
@@ -238,14 +238,14 @@ function AdminUsers() {
                         <td>
                           <div className="table-actions">
                             <button
-                              onClick={function() { handleOpenEditModal(user); }}
+                              onClick={function () { handleOpenEditModal(user); }}
                               className="btn btn-secondary btn-sm"
                               id={'edit-user-btn-' + user.id}
                             >
                               Edit
                             </button>
                             <button
-                              onClick={function() { handleDeleteUser(user.id); }}
+                              onClick={function () { handleDeleteUser(user.id); }}
                               className="btn btn-danger btn-sm"
                               id={'delete-user-btn-' + user.id}
                             >
@@ -281,7 +281,7 @@ function AdminUsers() {
                   className="form-input"
                   placeholder="e.g. John Doe"
                   value={userName}
-                  onChange={function(e) { setUserName(e.target.value); }}
+                  onChange={function (e) { setUserName(e.target.value); }}
                   required
                 />
               </div>
@@ -294,7 +294,7 @@ function AdminUsers() {
                   className="form-input"
                   placeholder="name@example.com"
                   value={userEmail}
-                  onChange={function(e) { setUserEmail(e.target.value); }}
+                  onChange={function (e) { setUserEmail(e.target.value); }}
                   required
                 />
               </div>
@@ -307,7 +307,7 @@ function AdminUsers() {
                   className="form-input"
                   placeholder="e.g. +44 7123 456789"
                   value={userMobile}
-                  onChange={function(e) { setUserMobile(e.target.value); }}
+                  onChange={function (e) { setUserMobile(e.target.value); }}
                 />
               </div>
 
@@ -318,7 +318,7 @@ function AdminUsers() {
                     id="user-modal-role"
                     className="form-input form-select"
                     value={userRole}
-                    onChange={function(e) { setUserRole(e.target.value); }}
+                    onChange={function (e) { setUserRole(e.target.value); }}
                   >
                     <option value="User">User</option>
                     <option value="Admin">Admin</option>
@@ -330,7 +330,7 @@ function AdminUsers() {
                     id="user-modal-status"
                     className="form-input form-select"
                     value={userStatus}
-                    onChange={function(e) { setUserStatus(e.target.value); }}
+                    onChange={function (e) { setUserStatus(e.target.value); }}
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>

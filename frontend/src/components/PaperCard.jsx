@@ -18,7 +18,7 @@ function PaperCard(props) {
     <div className="card paper-card" id={'paper-card-' + paper.id}>
       <div className="paper-img-container">
         {thumbnailUrl ? (
-          <img src={thumbnailUrl} alt={paper.title} className="paper-img" onError={function(e) {
+          <img src={thumbnailUrl} alt={paper.title} className="paper-img" onError={function (e) {
             e.target.style.display = 'none';
             e.target.parentNode.innerHTML = '<span class="paper-placeholder-img">📄</span>';
           }} />
@@ -27,9 +27,9 @@ function PaperCard(props) {
         )}
       </div>
 
-      <span className={`paper-badge ${isFree ? 'paper-badge-free' : 'paper-badge-price'}`} id={'paper-price-badge-' + paper.id}>
+      {/* <span className={`paper-badge ${isFree ? 'paper-badge-free' : 'paper-badge-price'}`} id={'paper-price-badge-' + paper.id}>
         {formattedPrice}
-      </span>
+      </span> */}
 
       {isAdmin && (
         <span className={`status-indicator ${paper.status === 'Active' ? 'status-active' : 'status-inactive'}`} style={{ position: 'absolute', top: '15px', right: '15px' }} id={'paper-status-badge-' + paper.id}>
@@ -38,7 +38,7 @@ function PaperCard(props) {
       )}
 
       <h3 className="paper-title" id={'paper-title-' + paper.id}>{paper.title}</h3>
-      
+
       <div className="paper-meta" id={'paper-meta-' + paper.id}>
         <span><strong>Subject:</strong> {paper.subject || 'N/A'}</span>
         <span><strong>Board:</strong> {paper.exam_board || 'N/A'}</span>
@@ -72,10 +72,10 @@ function PaperCard(props) {
         </div>
       ) : (
         <div className="paper-actions">
-          <button onClick={function() { onEdit(paper); }} className="btn btn-secondary btn-sm" id={'paper-edit-btn-' + paper.id}>
+          <button onClick={function () { onEdit(paper); }} className="btn btn-secondary btn-sm" id={'paper-edit-btn-' + paper.id}>
             Edit
           </button>
-          <button onClick={function() { onDelete(paper.id); }} className="btn btn-danger btn-sm" id={'paper-delete-btn-' + paper.id}>
+          <button onClick={function () { onDelete(paper.id); }} className="btn btn-danger btn-sm" id={'paper-delete-btn-' + paper.id}>
             Delete
           </button>
         </div>

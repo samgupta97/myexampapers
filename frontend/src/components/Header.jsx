@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import logo from "../assests/myimg.png"
 
 function Header() {
   var navigate = useNavigate();
   var location = useLocation();
-  
+
   var token = localStorage.getItem('token');
   var userString = localStorage.getItem('user');
   var user = userString ? JSON.parse(userString) : null;
@@ -20,9 +21,18 @@ function Header() {
     <header className="site-header" id="site-header">
       <div className="container header-container">
         <Link to="/" className="logo-link" id="logo-link">
-          <span className="logo-text">
+          {/* <span className="logo-text">
             MyExam<span className="logo-accent">Papers</span>
-          </span>
+          </span> */}
+          <img
+            src={logo}
+            alt="Logo"
+            style={{
+              width: "180px",
+              height: "60px",
+              objectFit: "contain"
+            }}
+          />
         </Link>
 
         <nav>

@@ -31,12 +31,8 @@ export function verifyOtp(email, otp) {
   return API.post('/auth/verify-otp', { email: email, otp: otp });
 }
 
-export function adminSendOtp(email) {
-  return API.post('/admin/send-otp', { email: email });
-}
-
-export function adminVerifyOtp(email, otp) {
-  return API.post('/admin/verify-otp', { email: email, otp: otp });
+export function adminLogin(email, password) {
+  return API.post('/admin/login', { email: email, password: password });
 }
 
 // =============================================

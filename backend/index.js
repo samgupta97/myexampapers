@@ -22,10 +22,7 @@ var PORT = process.env.PORT || 5000;
 // =============================================
 // MIDDLEWARE
 // =============================================
-app.use(cors({
-  origin: ['https://app.myexampapers.co.uk', 'http://localhost:3000'],
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -313,15 +310,21 @@ app.post('/api/auth/verify-otp', function (req, res) {
 // ROUTES: AUTH (Admin)
 // =============================================
 
-// POST /api/admin/send-otp — Send OTP to an admin user
-app.post('/api/admin/send-otp', function (req, res) {
+// POST /api/admin/login — Admin login with email and password (password same as emailid)
+app.post('/api/admin/login', function (req, res) {
     var email = req.body.email;
+    var password = req.body.password;
 
-    if (!email) {
-        return res.status(400).json({ success: false, message: 'Email is required' });
+    if (!email || !password) {
+        return res.status(400).json({ success: false, message: 'Email and password are required' });
     }
 
-    db.query('SELECT id, name, email, role, status FROM users WHERE email = ?', [email])
+    // Requirement: password field which will be same as emailid
+    if (password !== email) {
+        return res.status(401).json({ success: false, message: 'Invalid password' });
+    }
+
+    db.query('SELECT id, name, email, mobile, role, status FROM users WHERE email = ?', [email])
         .then(function (result) {
             var rows = result[0];
             if (rows.length === 0) {
@@ -332,46 +335,6 @@ app.post('/api/admin/send-otp', function (req, res) {
             if (user.status !== 'Active') {
                 return res.status(403).json({ success: false, message: 'Account is inactive' });
             }
-            if (user.role !== 'Admin') {
-                return res.status(403).json({ success: false, message: 'Not an admin account' });
-            }
-
-            var otp = generateOTP();
-            storeOTP(email, otp);
-
-            return sendOTPEmail(email, otp)
-                .then(function () {
-                    return res.json({ success: true, message: 'OTP sent to admin email' });
-                });
-        })
-        .catch(function (err) {
-            console.error('Admin send OTP error:', err.message);
-            return res.status(500).json({ success: false, message: 'Server error sending OTP' });
-        });
-});
-
-// POST /api/admin/verify-otp — Verify admin OTP and return auth token
-app.post('/api/admin/verify-otp', function (req, res) {
-    var email = req.body.email;
-    var otp = req.body.otp;
-
-    if (!email || !otp) {
-        return res.status(400).json({ success: false, message: 'Email and OTP are required' });
-    }
-
-    if (!verifyOTP(email, otp)) {
-        return res.status(401).json({ success: false, message: 'Invalid or expired OTP' });
-    }
-
-    // OTP is valid — fetch admin details and generate token
-    db.query('SELECT id, name, email, mobile, role, status FROM users WHERE email = ?', [email])
-        .then(function (result) {
-            var rows = result[0];
-            if (rows.length === 0) {
-                return res.status(404).json({ success: false, message: 'Admin not found' });
-            }
-
-            var user = rows[0];
             if (user.role !== 'Admin') {
                 return res.status(403).json({ success: false, message: 'Not an admin account' });
             }
@@ -387,8 +350,8 @@ app.post('/api/admin/verify-otp', function (req, res) {
             });
         })
         .catch(function (err) {
-            console.error('Admin verify OTP error:', err.message);
-            return res.status(500).json({ success: false, message: 'Server error verifying OTP' });
+            console.error('Admin login error:', err.message);
+            return res.status(500).json({ success: false, message: 'Server error during login' });
         });
 });
 

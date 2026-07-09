@@ -16,7 +16,7 @@ function AdminUploadPaper() {
   var [status, setStatus] = useState('Active');
   var [paperFile, setPaperFile] = useState(null);
   var [thumbnail, setThumbnail] = useState(null);
-  
+
   var [loading, setLoading] = useState(false);
   var [error, setError] = useState('');
   var [success, setSuccess] = useState('');
@@ -25,7 +25,7 @@ function AdminUploadPaper() {
     var token = localStorage.getItem('token');
     var userString = localStorage.getItem('user');
     var user = userString ? JSON.parse(userString) : null;
-    
+
     if (!token || !user || user.role !== 'Admin') {
       navigate('/admin/login');
       return;
@@ -45,7 +45,7 @@ function AdminUploadPaper() {
     setThumbnail(null);
     setError('');
     setSuccess('');
-    
+
     // Reset file input values
     var fileInput = document.getElementById('paper-file');
     var thumbInput = document.getElementById('paper-thumbnail');
@@ -109,7 +109,7 @@ function AdminUploadPaper() {
           <ul className="admin-nav-list">
             <li>
               <Link to="/admin/home" className="admin-nav-link" id="admin-sidebar-papers">
-                📂 Uploaded Papers
+                📂 Dashboard
               </Link>
             </li>
             <li>
@@ -147,7 +147,7 @@ function AdminUploadPaper() {
                   className="form-input"
                   placeholder="e.g. 11+ Mathematics Practice Paper Set A"
                   value={title}
-                  onChange={function(e) { setTitle(e.target.value); }}
+                  onChange={function (e) { setTitle(e.target.value); }}
                   required
                 />
               </div>
@@ -161,7 +161,7 @@ function AdminUploadPaper() {
                     className="form-input"
                     placeholder="e.g. Mathematics, English, VR"
                     value={subject}
-                    onChange={function(e) { setSubject(e.target.value); }}
+                    onChange={function (e) { setSubject(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -172,7 +172,7 @@ function AdminUploadPaper() {
                     className="form-input"
                     placeholder="e.g. Year 6, 11+, 13+"
                     value={classYear}
-                    onChange={function(e) { setClassYear(e.target.value); }}
+                    onChange={function (e) { setClassYear(e.target.value); }}
                   />
                 </div>
               </div>
@@ -186,7 +186,7 @@ function AdminUploadPaper() {
                     className="form-input"
                     placeholder="e.g. GL Assessment, CEM, ISEB"
                     value={examBoard}
-                    onChange={function(e) { setExamBoard(e.target.value); }}
+                    onChange={function (e) { setExamBoard(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -197,7 +197,7 @@ function AdminUploadPaper() {
                     className="form-input"
                     placeholder="e.g. Practice Pack, Past Paper"
                     value={paperType}
-                    onChange={function(e) { setPaperType(e.target.value); }}
+                    onChange={function (e) { setPaperType(e.target.value); }}
                   />
                 </div>
               </div>
@@ -209,7 +209,7 @@ function AdminUploadPaper() {
                   className="form-input form-textarea"
                   placeholder="Provide a description of what is included in the paper package..."
                   value={description}
-                  onChange={function(e) { setDescription(e.target.value); }}
+                  onChange={function (e) { setDescription(e.target.value); }}
                 />
               </div>
 
@@ -222,7 +222,7 @@ function AdminUploadPaper() {
                     className="form-input"
                     placeholder="e.g. Free or 14.99"
                     value={price}
-                    onChange={function(e) { setPrice(e.target.value); }}
+                    onChange={function (e) { setPrice(e.target.value); }}
                   />
                 </div>
                 <div className="form-group">
@@ -231,7 +231,7 @@ function AdminUploadPaper() {
                     id="paper-status"
                     className="form-input form-select"
                     value={status}
-                    onChange={function(e) { setStatus(e.target.value); }}
+                    onChange={function (e) { setStatus(e.target.value); }}
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
@@ -247,7 +247,7 @@ function AdminUploadPaper() {
                     id="paper-file"
                     accept=".pdf"
                     className="form-input"
-                    onChange={function(e) { setPaperFile(e.target.files[0]); }}
+                    onChange={function (e) { setPaperFile(e.target.files[0]); }}
                     required
                   />
                 </div>
@@ -258,7 +258,7 @@ function AdminUploadPaper() {
                     id="paper-thumbnail"
                     accept="image/*"
                     className="form-input"
-                    onChange={function(e) { setThumbnail(e.target.files[0]); }}
+                    onChange={function (e) { setThumbnail(e.target.files[0]); }}
                     required
                   />
                 </div>
