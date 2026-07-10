@@ -9,7 +9,7 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var multer = require('multer');
-var nodemailer = require('nodemailer');
+var axios = require('axios');
 var dotenv = require('dotenv');
 var db = require('./db');
 
@@ -148,27 +148,42 @@ function adminMiddleware(req, res, next) {
 }
 
 // =============================================
-// NODEMAILER CONFIG
+// EMAIL CONFIG (BREVO)
 // =============================================
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    connectionTimeout: 5000, // 5 seconds
-    greetingTimeout: 5000,
-    socketTimeout: 5000
-});
 
-// Send OTP via email (also logs to console for dev convenience)
+// Send OTP via Brevo REST API (HTTPS — works on Render free tier)
 function sendOTPEmail(email, otp) {
     console.log('============================================');
     console.log('  OTP for ' + email + ': ' + otp);
     console.log('============================================');
 
-    // Bypass actual email sending to avoid hanging on Render free tier
-    return Promise.resolve({ messageId: 'simulated-for-free-tier' });
+    return axios.post('https://api.brevo.com/v3/smtp/email', {
+        sender: { name: 'MyExamPapers', email: 'sameergpt9719@gmail.com' },
+        to: [{ email: email }],
+        subject: 'Your MyExamPapers Login OTP',
+        htmlContent: '<div style="font-family:Arial,sans-serif;padding:20px;max-width:480px;margin:auto;border:1px solid #eee;border-radius:8px;">'
+            + '<h2 style="color:#c0187f;">MyExamPapers.co.uk</h2>'
+            + '<p style="font-size:16px;">Your one-time password (OTP) is:</p>'
+            + '<h1 style="color:#3498db;letter-spacing:8px;font-size:40px;">' + otp + '</h1>'
+            + '<p>This OTP is valid for <strong>' + (process.env.OTP_EXPIRY_MINUTES || 5) + ' minutes</strong>.</p>'
+            + '<p style="color:#999;font-size:13px;">If you did not request this, please ignore this email.</p>'
+            + '</div>'
+    }, {
+        headers: {
+            'api-key': process.env.BREVO_API_KEY,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(function(response) {
+        console.log('Brevo email sent, messageId:', response.data.messageId);
+        return response.data;
+    })
+    .catch(function(error) {
+        var msg = error.response ? JSON.stringify(error.response.data) : error.message;
+        console.error('Brevo email error:', msg);
+        return null;
+    });
 }
 
 // =============================================
