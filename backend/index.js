@@ -9,7 +9,7 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var multer = require('multer');
-var nodemailer = require('nodemailer');
+var { Resend } = require('resend');
 var dotenv = require('dotenv');
 var db = require('./db');
 
@@ -148,18 +148,9 @@ function adminMiddleware(req, res, next) {
 }
 
 // =============================================
-// NODEMAILER CONFIG
+// EMAIL CONFIG (RESEND)
 // =============================================
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    connectionTimeout: 5000, // 5 seconds
-    greetingTimeout: 5000,
-    socketTimeout: 5000
-});
+var resend = new Resend(process.env.RESEND_API_KEY);
 
 // Send OTP via email (also logs to console for dev convenience)
 function sendOTPEmail(email, otp) {
@@ -167,8 +158,25 @@ function sendOTPEmail(email, otp) {
     console.log('  OTP for ' + email + ': ' + otp);
     console.log('============================================');
 
-    // Bypass actual email sending to avoid hanging on Render free tier
-    return Promise.resolve({ messageId: 'simulated-for-free-tier' });
+    return resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: email,
+        subject: 'Your MyExamPapers Login OTP',
+        html: '<div style="font-family:Arial,sans-serif;padding:20px;">'
+            + '<h2 style="color:#2c3e50;">MyExamPapers.co.uk</h2>'
+            + '<p>Your one-time password (OTP) is:</p>'
+            + '<h1 style="color:#3498db;letter-spacing:5px;">' + otp + '</h1>'
+            + '<p>This OTP is valid for ' + (process.env.OTP_EXPIRY_MINUTES || 5) + ' minutes.</p>'
+            + '</div>'
+    })
+    .then(function(response) {
+        console.log('Resend email sent:', response.data);
+        return response.data;
+    })
+    .catch(function(error) {
+        console.error('Resend email error:', error);
+        return null;
+    });
 }
 
 // =============================================
@@ -241,7 +249,7 @@ app.post('/api/auth/send-otp', function (req, res) {
 
             return sendOTPEmail(email, otp)
                 .then(function () {
-                    return res.json({ success: true, message: 'OTP sent to your email', dev_otp: otp });
+                    return res.json({ success: true, message: 'OTP sent to your email' });
                 });
         })
         .catch(function (err) {
