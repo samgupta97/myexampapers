@@ -256,7 +256,7 @@ app.post('/api/auth/send-otp', function (req, res) {
 
             return sendOTPEmail(email, otp)
                 .then(function () {
-                    return res.json({ success: true, message: 'OTP sent to your email', dev_otp: otp });
+                    return res.json({ success: true, message: 'OTP sent to your email' });
                 });
         })
         .catch(function (err) {
