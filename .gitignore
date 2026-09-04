@@ -1,0 +1,20 @@
+node_modules/
+build/
+dist/
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# uploads (user content, not source)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# Don't rewrite requests for real files/directories (e.g. static assets, uploads)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Send everything else to index.html so React Router can handle it
+RewriteRule ^ index.html [L]
